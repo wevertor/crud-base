@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
   card: {
     maxWidth: 600,
     margin: "auto",
-    marginTop: theme.spacing(5),
+    marginTop: "5%",
   },
   title: {
     padding: `${theme.spacing(3)}px ${theme.spacing(2.5)}px
@@ -22,9 +22,9 @@ ${theme.spacing(2)}px`,
 export default function Home() {
   const classes = useStyles();
   return (
-    <Card className={classes.card}>
-      <Typography variant="h6" classname={classes.title}>
-        Home Page
+    <Card elevation={5} className={classes.card}>
+      <Typography variant="h6" className={classes.title}>
+        Página Inicial
       </Typography>
       <CardMedia
         className={classes.media}
@@ -33,7 +33,7 @@ export default function Home() {
       />
       <CardContent>
         <Typography variant="body2" component="p">
-          Página inicial de uma aplicação CRUD.
+          Uma aplicação para implementar operações em um banco de dados.
         </Typography>
       </CardContent>
     </Card>

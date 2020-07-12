@@ -18,13 +18,16 @@ const create = async (user) => {
 
 const list = async () => {
   try {
-    let response = await axios.get(apiUrl);
-    return await reponse.json();
+    let response = await axios.get(apiUrl, {
+      headers: {
+        Timeout: 3000,
+      },
+    });
+    return response.data;
   } catch (error) {
     console.error(error);
   }
 };
-
 const read = async (params, credentials) => {
   try {
     let response = await axios.get(apiUrl + params.userId, {
@@ -34,7 +37,7 @@ const read = async (params, credentials) => {
         Authorization: `Bearer  + ${credentials.t}`,
       },
     });
-    return await response.json();
+    return response;
   } catch (error) {
     console.log(error);
   }
@@ -49,7 +52,7 @@ const update = async (params, credentials, user) => {
         Authorization: `Bearer  + ${credentials.t}`,
       },
     });
-    return await response.json();
+    return response;
   } catch (error) {
     console.error(error);
   }
@@ -64,7 +67,7 @@ const remove = async (params, credentials) => {
         Authorization: `Bearer  + ${credentials.t}`,
       },
     });
-    return await response.json();
+    return response;
   } catch (error) {
     console.error(error);
   }
