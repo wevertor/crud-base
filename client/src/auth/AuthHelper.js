@@ -1,3 +1,5 @@
+import { signout } from "./ApiAuth";
+
 export default {
   authenticate(jwt, cb) {
     if (typeof window !== "undefined")
