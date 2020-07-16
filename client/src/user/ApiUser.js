@@ -10,7 +10,7 @@ const create = async (user) => {
         "Content-Type": "application/json;charset=UTF-8",
       },
     });
-    console.log(response);
+    return response.data;
   } catch (error) {
     console.error(error);
   }
