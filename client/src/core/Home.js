@@ -7,7 +7,8 @@ const useStyles = makeStyles((theme) => ({
   card: {
     maxWidth: 600,
     margin: "auto",
-    marginTop: "5%",
+    marginTop: theme.spacing(5),
+    paddingBottom: theme.spacing(2),
   },
   title: {
     padding: `${theme.spacing(3)}px ${theme.spacing(2.5)}px
