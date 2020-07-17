@@ -43,12 +43,12 @@ const list = async () => {
 const read = async (params, credentials) => {
   try {
     let response = undefined;
-    axios
+    await axios
       .get("http://localhost:5000/user/" + params.userId, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json;charset=UTF-8",
-          Authorization: `Bearer  + ${credentials.t}`,
+          Authorization: `Bearer ${credentials.t}`,
         },
       })
       .then((res) => {

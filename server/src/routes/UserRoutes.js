@@ -8,7 +8,7 @@ router.route("/users").get(userCtrl.list).post(userCtrl.create);
 
 /* funções possíveis ao passar um ID de usuário específico */
 router
-  .route("/users/:userId")
+  .route("/user/:userId")
   .get(authCtrl.requireSignin, userCtrl.read)
   .put(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.update)
   .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.remove);

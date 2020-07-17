@@ -39,10 +39,11 @@ const signout = (req, res) => {
 const requireSignin = expressJwt({
   secret: config.jwtSecret,
   userProperty: "auth",
-  algorithms: ["SHA1"],
+  algorithms: ["HS256"],
 });
 
 const hasAuthorization = (req, res, next) => {
+  // verifica os dados tão de acordo com os salvos nos cookies
   const authorized = req.profile && req.auth && req.profile._id == req.auth._id;
   if (!authorized) {
     return res.status("403").json({
