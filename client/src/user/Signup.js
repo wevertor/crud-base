@@ -166,6 +166,7 @@ export default function Signup() {
               <Icon color="error" className={classes.error}>
                 error
               </Icon>
+              {values.error}
             </Typography>
           )}
         </CardContent>

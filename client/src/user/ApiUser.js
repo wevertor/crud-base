@@ -4,13 +4,25 @@ const apiUrl = "http://localhost:5000/users";
 
 const create = async (user) => {
   try {
-    let response = await axios.post(apiUrl, user, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json;charset=UTF-8",
-      },
-    });
-    return response.data;
+    let res = undefined;
+    await axios
+      .post(apiUrl, user, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=UTF-8",
+        },
+      })
+      .then((response) => {
+        console.log("deu certo");
+        console.log(res.data);
+        res = response.data;
+      })
+      .catch((error) => {
+        console.log("deu errado");
+        //console.log(error.response.data);
+        res = error.response.data;
+      });
+    return res;
   } catch (error) {
     console.error(error);
   }
@@ -30,13 +42,23 @@ const list = async () => {
 };
 const read = async (params, credentials) => {
   try {
-    let response = await axios.get(apiUrl + params.userId, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json;charset=UTF-8",
-        Authorization: `Bearer  + ${credentials.t}`,
-      },
-    });
+    let response = undefined;
+    axios
+      .get("http://localhost:5000/user/" + params.userId, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=UTF-8",
+          Authorization: `Bearer  + ${credentials.t}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        response = res.data;
+      })
+      .catch((erro) => {
+        console.log(erro.response.data);
+        response = erro.response.data;
+      });
     return response;
   } catch (error) {
     console.log(error);
@@ -45,14 +67,18 @@ const read = async (params, credentials) => {
 
 const update = async (params, credentials, user) => {
   try {
-    let response = await axios.put(apiUrl + params.userId, user, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json;charset=UTF-8",
-        Authorization: `Bearer  + ${credentials.t}`,
-      },
-    });
-    return response;
+    let response = await axios.put(
+      "http://localhost:5000/user/" + params.userId,
+      user,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=UTF-8",
+          Authorization: `Bearer  + ${credentials.t}`,
+        },
+      }
+    );
+    return response.data;
   } catch (error) {
     console.error(error);
   }
@@ -67,7 +93,7 @@ const remove = async (params, credentials) => {
         Authorization: `Bearer  + ${credentials.t}`,
       },
     });
-    return response;
+    return response.data;
   } catch (error) {
     console.error(error);
   }

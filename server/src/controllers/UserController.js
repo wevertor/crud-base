@@ -16,9 +16,7 @@ const create = async (req, res, next) => {
       message: "Cadastrado com sucesso!",
     });
   } catch (err) {
-    return res.status(400).json({
-      error: errorHandler.getErrorMessage(err),
-    });
+    return res.status(400).json({ error: errorHandler.getErrorMessage(err) });
   }
 };
 
@@ -78,7 +76,7 @@ const update = async (req, res, next) => {
     res.json(user);
   } catch (err) {
     return res.status(400).json({
-      error: errorHandler.getErrorMessage(err),
+      data: { error: errorHandler.getErrorMessage(err) },
     });
   }
 };

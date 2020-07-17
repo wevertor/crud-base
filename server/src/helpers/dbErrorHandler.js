@@ -29,9 +29,10 @@ const getUniqueErrorMessage = (err) => {
       err.message.lastIndexOf("_1")
     );
     output =
-      fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + " já existe.";
+      /*fieldName.charAt(0).toUpperCase() +*/ fieldName.slice(1) +
+      " já existe.";
   } catch (ex) {
-    output = "Unique field already exists";
+    output = "Campo único já existente.";
   }
   return output;
 };
