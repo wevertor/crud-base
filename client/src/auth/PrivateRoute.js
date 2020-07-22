@@ -7,18 +7,15 @@ import auth from "./AuthHelper";
 const PrivateRoute = ({ component: Component, ...rest }) => {
   <Route
     {...rest}
-    render={(props) =>
-      auth.isAuthenticated() ? (
-        <Component {...props} />
-      ) : (
-        <Redirect
-          to={{
-            pathname: "/signin",
-            state: { from: props.location },
-          }}
-        />
-      )
-    }
+    render={(props) => {
+      if (auth.isAuthenticated()) return <Component {...props} />;
+      else
+        return (
+          <Redirect
+            to={{ pathname: "/signin", state: { from: props.location } }}
+          />
+        );
+    }}
   />;
 };
 

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { list } from "./ApiUser";
+import { ArrowForward, Person } from "@material-ui/icons";
+import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Paper,
   List,
@@ -12,9 +14,8 @@ import {
   Typography,
   Divider,
 } from "@material-ui/core";
-import { ArrowForward, Person } from "@material-ui/icons";
-import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
+
+import { list } from "./ApiUser";
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.gutters({
@@ -39,18 +40,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Users = () => {
   const classes = useStyles();
+
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     list().then((data) => {
-      console.log(data);
-      if (data && data.error) {
-        console.log(data.error);
-      } else {
-        setUsers(data);
-      }
+      if (data && data.error) console.log(data.error);
+      else setUsers(data);
     });
-    return;
   }, []);
 
   return (

@@ -3,8 +3,9 @@ import axios from "axios";
 const apiUrl = "http://localhost:5000/auth";
 
 const signin = async (user) => {
+  let response;
+
   try {
-    let response = undefined;
     await axios
       .post(apiUrl + "/signin", user, {
         headers: {
@@ -16,7 +17,6 @@ const signin = async (user) => {
         response = res.data;
       })
       .catch((erro) => {
-        console.log(erro.response.data);
         response = erro.response.data;
       });
     return response;
@@ -26,9 +26,24 @@ const signin = async (user) => {
 };
 
 const signout = async () => {
+  let response;
+
   try {
-    let response = await axios.get(apiUrl + "/signout");
-    return await response.json;
+    await axios
+      .get(apiUrl + "/signout", {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        response = res.data;
+      })
+      .catch((erro) => {
+        response = erro.response.data;
+      });
+
+    return response;
   } catch (error) {
     console.log(error);
   }

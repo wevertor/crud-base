@@ -107,12 +107,8 @@ export default function Signup() {
     }
 
     create(user).then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error });
-      } else {
-        setValues({ ...values, error: "", open: true });
-      }
-      console.log(values);
+      if (data.error) setValues({ ...values, error: data.error });
+      else setValues({ ...values, error: "", open: true });
     });
   };
 
@@ -123,7 +119,7 @@ export default function Signup() {
           <Typography variant="h6" className={classes.title}>
             Cadastrar
           </Typography>
-          <form autoComplete="off">
+          <form>
             <TextField
               id="nome"
               label="Nome"
@@ -133,6 +129,7 @@ export default function Signup() {
               margin="normal"
               error={errorText.nameError}
               helperText={errorText.name}
+              autoComplete="off"
             />
             <br />
             <TextField
@@ -156,11 +153,12 @@ export default function Signup() {
               margin="normal"
               error={errorText.passwordError}
               helperText={errorText.password}
+              autoComplete="off"
             />
           </form>
 
           <br />
-          {/* se houver algum erro */}
+          {/* se houver algum erro mostra um componente erro */}
           {values.error && (
             <Typography component="p" color="error">
               <Icon color="error" className={classes.error}>
@@ -181,6 +179,8 @@ export default function Signup() {
           </Button>
         </CardActions>
       </Card>
+
+      {/* pop-up mostrando mensagem de sucesso */}
       <Dialog open={values.open} disableBackdropClick={true}>
         <DialogTitle>Nova Conta</DialogTitle>
         <DialogContent>

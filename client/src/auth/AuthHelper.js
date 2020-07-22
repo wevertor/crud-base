@@ -6,8 +6,10 @@ export default {
       localStorage.setItem("jwt", JSON.stringify(jwt));
     cb();
   },
+
   isAuthenticated() {
     if (typeof window == "undefined") return false;
+
     if (localStorage.getItem("jwt"))
       return JSON.parse(localStorage.getItem("jwt"));
     else return false;

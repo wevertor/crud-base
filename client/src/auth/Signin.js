@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
-import { signin } from "./ApiAuth.js";
-import auth from "./AuthHelper";
 import {
   Card,
   CardContent,
@@ -12,7 +10,10 @@ import {
   CardActions,
   Button,
 } from "@material-ui/core";
+
 import { validateEmail, validatePassword } from "./../auth/Validation";
+import { signin } from "./ApiAuth.js";
+import auth from "./AuthHelper";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -51,7 +52,7 @@ export default function Signin(props) {
     redirectToReferrer: false,
   });
 
-  const [errorText, setErrorText] = React.useState({
+  const [errorText, setErrorText] = useState({
     email: "",
     emailError: false,
     password: "",
@@ -92,9 +93,8 @@ export default function Signin(props) {
     }
 
     signin(user).then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error });
-      } else {
+      if (data.error) setValues({ ...values, error: data.error });
+      else {
         auth.authenticate(data, () => {
           setValues({ ...values, error: "", redirectToReferrer: true });
         });
@@ -103,68 +103,64 @@ export default function Signin(props) {
   };
 
   const { from } = props.location.state || {
-    from: {
-      pathname: "/",
-    },
+    from: { pathname: "/" },
   };
 
   const { redirectToReferrer } = values;
-  if (redirectToReferrer) {
-    return <Redirect to={from} />;
-  }
+
+  if (redirectToReferrer) return <Redirect to={from} />;
 
   return (
-    <div>
-      <Card className={classes.card}>
-        <CardContent>
-          <Typography variant="h6" className={classes.title}>
-            Entrar
+    <Card className={classes.card}>
+      <CardContent>
+        <Typography variant="h6" className={classes.title}>
+          Entrar
+        </Typography>
+        <form>
+          <TextField
+            id="email"
+            label="Email"
+            className={classes.textField}
+            value={values.email}
+            onChange={handleChange("email")}
+            margin="normal"
+            error={errorText.emailError}
+            helperText={errorText.email}
+            autoComplete="off"
+          />
+          <br />
+          <TextField
+            id="senha"
+            label="Senha"
+            type="password"
+            className={classes.textField}
+            value={values.password}
+            onChange={handleChange("password")}
+            margin="normal"
+            error={errorText.passwordError}
+            helperText={errorText.password}
+          />
+        </form>
+        <br />{" "}
+        {values.error && (
+          <Typography component="p" color="error">
+            <Icon color="error" className={classes.error}>
+              error
+            </Icon>
+            {values.error}
           </Typography>
-          <form autoComplete="off">
-            <TextField
-              id="email"
-              label="Email"
-              className={classes.textField}
-              value={values.email}
-              onChange={handleChange("email")}
-              margin="normal"
-              error={errorText.emailError}
-              helperText={errorText.email}
-            />
-            <br />
-            <TextField
-              id="senha"
-              label="Senha"
-              type="password"
-              className={classes.textField}
-              value={values.password}
-              onChange={handleChange("password")}
-              margin="normal"
-              error={errorText.passwordError}
-              helperText={errorText.password}
-            />
-          </form>
-          <br />{" "}
-          {values.error && (
-            <Typography component="p" color="error">
-              <Icon color="error" className={classes.error}>
-                error
-              </Icon>
-              {values.error}
-            </Typography>
-          )}
-        </CardContent>
-        <CardActions>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={clickSubmit}
-            className={classes.submit}
-          >
-            Confirmar
-          </Button>
-        </CardActions>
-      </Card>
-    </div>
+        )}
+      </CardContent>
+      <CardActions>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={clickSubmit}
+          className={classes.submit}
+        >
+          Confirmar
+        </Button>
+      </CardActions>
+    </Card>
   );
 }

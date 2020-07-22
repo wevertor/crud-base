@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import auth from "./../auth/AuthHelper";
-import { read } from "./ApiUser";
 import { Redirect, Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -16,6 +14,8 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { Person, Edit } from "@material-ui/icons";
+import auth from "./../auth/AuthHelper";
+import { read } from "./ApiUser";
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.gutters({
@@ -41,21 +41,23 @@ export default function Profile({ match }) {
   useEffect(() => {
     //verifica se o usuário está autenticado
     const jwt = auth.isAuthenticated();
+
     read({ userId: match.params.userId }, { t: jwt.token }).then((data) => {
-      //se não estiver autorizado vai pra sign in, se estiver mostra os dados
       if (data.error) {
         setRedirectToSignin(true);
       } else {
         setUser(data);
       }
     });
-    return () => {};
   }, [match.params.userId]);
 
   if (redirectToSignin) return <Redirect to="/signin" />;
 
-  return (
-    <div>
+  if (
+    auth.isAuthenticated().user &&
+    auth.isAuthenticated().user._id === user._id
+  ) {
+    return (
       <Paper className={classes.root} elevation={4}>
         <Typography variant="h6" className={classes.title}>
           Perfil
@@ -68,17 +70,14 @@ export default function Profile({ match }) {
               </Avatar>
             </ListItemAvatar>
             <ListItemText primary={user.name} secondary={user.email} />{" "}
-            {auth.isAuthenticated().user &&
-              auth.isAuthenticated().user._id === user._id && (
-                <ListItemSecondaryAction>
-                  <Link to={"/user/edit/" + user._id}>
-                    <IconButton aria-label="Edit" color="primary">
-                      <Edit />
-                    </IconButton>
-                  </Link>
-                  {/*DELETE USER!!!!!!!*/}
-                </ListItemSecondaryAction>
-              )}
+            <ListItemSecondaryAction>
+              <Link to={"/user/edit/" + user._id}>
+                <IconButton aria-label="Edit" color="primary">
+                  <Edit />
+                </IconButton>
+              </Link>
+              {/*DELETE USER!!!!!!!*/}
+            </ListItemSecondaryAction>
           </ListItem>
           <Divider />
           <ListItem>
@@ -88,6 +87,6 @@ export default function Profile({ match }) {
           </ListItem>
         </List>
       </Paper>
-    </div>
-  );
+    );
+  }
 }
