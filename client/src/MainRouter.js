@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+import PrivateRoute from "./auth/PrivateRoute";
 import Home from "./core/Home";
 import Users from "./user/Users";
 import Signup from "./user/Signup";
@@ -14,7 +15,7 @@ const MainRouter = () => {
       <Route path="/users" component={Users} />
       <Route path="/signup" component={Signup} />
       <Route path="/signin" component={Signin} />
-      <Route path="/user/edit/:userId" component={Edit} />
+      <PrivateRoute path="/user/edit/:userId" component={Edit} />
       <Route path="/user/:userId" component={Profile} />
     </Switch>
   );
