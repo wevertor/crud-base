@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import { Person, Edit } from "@material-ui/icons";
 import {
   Paper,
   Typography,
@@ -12,10 +13,12 @@ import {
   Divider,
   ListItemSecondaryAction,
   IconButton,
+  Button,
 } from "@material-ui/core";
-import { Person, Edit } from "@material-ui/icons";
+
 import auth from "./../auth/AuthHelper";
 import { read } from "./ApiUser";
+import DeleteUser from "./DeleteUser";
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.gutters({
@@ -29,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     color: theme.palette.openTitle,
   },
+  button: {
+    marginTop: theme.spacing(2),
+    textDecoration: "none",
+  },
 }));
 
 export default function Profile({ match }) {
@@ -37,25 +44,45 @@ export default function Profile({ match }) {
   // estados
   const [user, setUser] = useState({});
   const [redirectToSignin, setRedirectToSignin] = useState(false);
-
+  const [erro, setErro] = useState(undefined);
   //verifica se o usuário está autenticado
   const jwt = auth.isAuthenticated();
 
   useEffect(() => {
     let mounted = true;
-    read({ userId: jwt.user._id }, { t: jwt.token }).then((data) => {
+    read({ userId: match.params.userId }, { t: jwt.token }).then((data) => {
       if (mounted) {
-        if (data.error) console.log(data.error);
+        if (data.error) setErro(data.error);
         else setUser(data);
       }
     });
     return () => {
       mounted = false;
     };
-  }, [jwt]);
+  }, [match.params.userId]);
 
-  if (redirectToSignin) return <Redirect to="/signin" />;
+  const handleReturn = () => setRedirectToSignin(true);
 
+  if (redirectToSignin) return <Redirect to="/" />;
+
+  // se der erro
+  if (erro)
+    return (
+      <Paper className={classes.root} elevation={4}>
+        <Typography variant="h6" className={classes.title}>
+          {erro}
+        </Typography>
+        <Button
+          className={classes.button}
+          onClick={handleReturn}
+          color="primary"
+        >
+          Voltar
+        </Button>
+      </Paper>
+    );
+
+  // se der bom
   if (jwt.user && jwt.user._id === user._id) {
     return (
       <Paper className={classes.root} elevation={4}>
@@ -76,7 +103,7 @@ export default function Profile({ match }) {
                   <Edit />
                 </IconButton>
               </Link>
-              {/*DELETE USER!!!!!!!*/}
+              <DeleteUser userId={user._id} />
             </ListItemSecondaryAction>
           </ListItem>
           <Divider />
@@ -90,6 +117,7 @@ export default function Profile({ match }) {
     );
   }
 
+  // enquanto carrega
   return (
     <Paper className={classes.root} elevation={4}>
       <Typography variant="h6" className={classes.title}>
