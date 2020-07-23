@@ -103,7 +103,7 @@ const remove = async (params, credentials) => {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json;charset=UTF-8",
-          Authorization: `Bearer  + ${credentials.t}`,
+          Authorization: `Bearer ${credentials.t}`,
         },
       })
       .then((res) => {
