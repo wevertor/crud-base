@@ -1,4 +1,4 @@
-# Skeleton
+# CRUD Base
 
 ### Uma aplicação full stack com a implementação básica de uma [API CRUD](https://https://pt.wikipedia.org/wiki/CRUD).
 
@@ -12,8 +12,8 @@ Este projeto foi desenvolvido com a stack MERN:
 - [Node.js](https://nodejs.org)
 
 ## 💻 Projeto
-
-O Skeleton provê uma API integrada a um banco de dados MongoDB que armazena e gerencia um grupo de usuários. Permitindo seu cadastro, acesso, edição e remoção.
+![Tela inicial da aplicação](https://user-images.githubusercontent.com/19598108/88347324-da19e880-cd20-11ea-89a7-f0f26e8c6a0f.png)
+O backend provê uma API RESTful integrada a um banco de dados MongoDB que armazena e gerencia um grupo de usuários. Permitindo seu cadastro, acesso, edição e remoção. O frontend consome essa API e permite de forma intuitiva experimentá-la.
 
 ## 🤔 Como contribuir
 
