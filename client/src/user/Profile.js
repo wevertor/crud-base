@@ -38,25 +38,25 @@ export default function Profile({ match }) {
   const [user, setUser] = useState({});
   const [redirectToSignin, setRedirectToSignin] = useState(false);
 
-  useEffect(() => {
-    //verifica se o usuário está autenticado
-    const jwt = auth.isAuthenticated();
+  //verifica se o usuário está autenticado
+  const jwt = auth.isAuthenticated();
 
-    read({ userId: match.params.userId }, { t: jwt.token }).then((data) => {
-      if (data.error) {
-        setRedirectToSignin(true);
-      } else {
-        setUser(data);
+  useEffect(() => {
+    let mounted = true;
+    read({ userId: jwt.user._id }, { t: jwt.token }).then((data) => {
+      if (mounted) {
+        if (data.error) console.log(data.error);
+        else setUser(data);
       }
     });
-  }, [match.params.userId]);
+    return () => {
+      mounted = false;
+    };
+  }, [jwt]);
 
   if (redirectToSignin) return <Redirect to="/signin" />;
 
-  if (
-    auth.isAuthenticated().user &&
-    auth.isAuthenticated().user._id === user._id
-  ) {
+  if (jwt.user && jwt.user._id === user._id) {
     return (
       <Paper className={classes.root} elevation={4}>
         <Typography variant="h6" className={classes.title}>
@@ -71,7 +71,7 @@ export default function Profile({ match }) {
             </ListItemAvatar>
             <ListItemText primary={user.name} secondary={user.email} />{" "}
             <ListItemSecondaryAction>
-              <Link to={"/user/edit/" + user._id}>
+              <Link to={`/user/edit/${jwt.user._id}`}>
                 <IconButton aria-label="Edit" color="primary">
                   <Edit />
                 </IconButton>
@@ -89,4 +89,12 @@ export default function Profile({ match }) {
       </Paper>
     );
   }
+
+  return (
+    <Paper className={classes.root} elevation={4}>
+      <Typography variant="h6" className={classes.title}>
+        Carregando...
+      </Typography>
+    </Paper>
+  );
 }

@@ -12,7 +12,6 @@ import {
   Avatar,
   IconButton,
   Typography,
-  Divider,
 } from "@material-ui/core";
 
 import { list } from "./ApiUser";
